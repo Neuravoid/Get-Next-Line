@@ -1,55 +1,51 @@
 # Get Next Line
 
-**Get Next Line**, 42 okullarının müfredatında yer alan bir projedir. Bu proje, bir dosya tanıtıcısından satır satır veri okumayı sağlayan bir C fonksiyonunun geliştirilmesini amaçlar.
+**Get Next Line** is a project included in the curriculum of 42 schools. This project aims to develop a C function that allows reading data line by line from a file descriptor.
 
-## Proje Amacı
+## Project Objective
 
-Bu projenin temel amacı, aşağıdaki özelliklere sahip bir `get_next_line` fonksiyonunu yazmaktır:
+The primary goal of this project is to implement a `get_next_line` function with the following features:
 
-- **Satır Okuma**: Fonksiyon, her çağrıldığında bir dosya tanıtıcısından bir satır okur ve bu satırı döndürür.
-- **Bellek Yönetimi**: `malloc` ve `free` fonksiyonlarını kullanarak dinamik bellek tahsisi ve yönetimi yapılır.
-- **Sistem Çağrıları**: `read` sistem çağrısı kullanılarak dosyadan veri okunur.
-- **Statik Değişkenler**: Fonksiyon, bir önceki çağrısından kalan verileri saklamak için statik değişkenler kullanır.
+- **Line Reading**: The function reads one line at a time from a file descriptor and returns it.
+- **Memory Management**: Dynamic memory allocation and management are handled using `malloc` and `free`.
+- **System Calls**: The `read` system call is used to read data from the file.
+- **Static Variables**: The function uses static variables to store leftover data from the previous call.
 
-## Fonksiyon Prototipi
+## Function Prototype
 
 ```c
 char *get_next_line(int fd);
 ```
 
-- `fd`: Okunacak dosya tanıtıcısı.
-- **Dönen Değer**: Okunan satırı içeren bir karakter işaretçisi. Dosyanın sonuna gelinmişse veya bir hata oluşmuşsa `NULL` döner.
+- `fd`: The file descriptor to read from.
+- **Return Value**: A pointer to a character string containing the read line. Returns `NULL` if the end of the file is reached or an error occurs.
 
-## Kullanım
+## Usage
 
-`get_next_line` fonksiyonu, bir döngü içinde çağrılarak dosyanın sonuna kadar her seferinde bir satır okunabilir:
+The `get_next_line` function can be called in a loop to read one line at a time until the end of the file:
 
 ```c
-int fd = open("dosya.txt", O_RDONLY);
-char *satir;
+int fd = open("file.txt", O_RDONLY);
+char *line;
 
-while ((satir = get_next_line(fd)) != NULL)
+while ((line = get_next_line(fd)) != NULL)
 {
-    // Satırı işle
-    free(satir);
+    // Process the line
+    free(line);
 }
 close(fd);
 ```
 
-## Derleme
+## Compilation
 
-Fonksiyon, derleme sırasında `BUFFER_SIZE` makrosu tanımlanarak farklı tampon boyutlarıyla test edilebilir:
+The function can be compiled with the `BUFFER_SIZE` macro defined at compile time to test with different buffer sizes:
 
 ```bash
 gcc -Wall -Wextra -Werror -D BUFFER_SIZE=32 get_next_line.c get_next_line_utils.c -o gnl
 ```
 
-## Dikkate Alınması Gerekenler
+## Important Notes
 
-- **Tampon Boyutu**: `BUFFER_SIZE` değeri, `read` çağrılarında kullanılacak tampon boyutunu belirler ve performansı etkileyebilir.
-- **Çoklu Dosya Tanıtıcıları**: Fonksiyon, aynı anda birden fazla dosya tanıtıcısından okuma yapacak şekilde tasarlanmalıdır.
-- **Bellek Sızıntıları**: Dinamik bellek tahsisi yapıldığından, bellek sızıntılarını önlemek için her okunan satırın serbest bırakılması önemlidir.
-
-## Lisans
-
-Bu proje, MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakınız.
+- **Buffer Size**: The `BUFFER_SIZE` value determines the buffer size used in `read` calls and can impact performance.
+- **Multiple File Descriptors**: The function should be designed to handle multiple file descriptors simultaneously.
+- **Memory Leaks**: Since dynamic memory allocation is used, it is crucial to free each read line to prevent memory leaks.
