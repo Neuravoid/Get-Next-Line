@@ -6,13 +6,13 @@
 /*   By: ualkan <ualkan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 18:48:14 by ualkan            #+#    #+#             */
-/*   Updated: 2024/12/21 12:40:46 by ualkan           ###   ########.fr       */
+/*   Updated: 2024/12/21 13:01:42 by ualkan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_line(int fd, char *stack, char *buffer)
+static char	*read_line(int fd, char *stack, char *buffer)
 {
 	int	read_bytes;
 
@@ -35,7 +35,7 @@ char	*read_line(int fd, char *stack, char *buffer)
 	return (stack);
 }
 
-char	*get_beforenl(char **stack)
+static char	*get_beforenl(char **stack)
 {
 	int		index_nl;
 	char	*printed;
